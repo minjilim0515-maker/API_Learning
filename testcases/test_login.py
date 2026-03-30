@@ -3,31 +3,24 @@ import pytest
 from common.request_util import RequestUtil
 from api.user_api import login_api, update_nickname_api
 
-def test_login_success():
-    res = login_api("test", "123456")
+
+@pytest.mark.parametrize("username, password ,expected_status, expected_code",[
+    ("test","123456",200,0),
+    ("test","wrong_password",200,1001),])
+def test_login_parametrize(username,password,expected_status,expected_code):
+    res = login_api(username,password)
     data = res.json()
-    assert data["code"] == 0
-    assert res.status_code == 200
-def test_login_fail():
-    res = login_api("test", "wrong_password")
-    data = res.json()
-    assert data["code"] == 1001
-    assert res.status_code == 200
+    assert res.status_code == expected_status
+    assert data["code"] == expected_code
 
 
-def test_rename_success(login):
-    #token = login
-    assert login is not None
-    res = update_nickname_api(login, "new_name")
-    data = res.json()
-    assert data["code"] == 0
-    assert res.status_code == 200
 
-def test_rename_fail(login):
-#
-    assert login is not None
-    res = update_nickname_api(login, "")
+@pytest.mark.parametrize("nickname, expected_status, expected_code", [
+    ("valid_name", 200, 0),
+    ("", 200, 2001),
+])
+def test_update_nickname(login,nickname, expected_status, expected_code):
+    res = update_nickname_api(login, nickname)
     data = res.json()
-    assert data["code"] == 2001
-    assert res.status_code == 200
-    assert res.json()["code"] == 2001
+    assert data["code"] == expected_code
+    assert res.status_code == expected_status

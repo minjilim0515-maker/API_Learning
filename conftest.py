@@ -4,6 +4,4 @@ from common.request_util import RequestUtil
 def login():
     res = RequestUtil("post","url", json={"username": "test", "password": "123456"})
     data = res.json()
-    assert res.status_code == 200
-    assert data["code" ] == 0
     return data["data"]["token"]

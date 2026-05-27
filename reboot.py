@@ -3,7 +3,7 @@ import time
 import os
 
 # --- 配置参数 ---
-LOOP_COUNT = 100
+LOOP_COUNT = 50
 WAIT_TIME = 120
 TZ_LOG = "tzbsp.log"
 DEVICE_ID = ""  # 如果有多个设备，请填写序列号，例如 "ZY22GXXXX"
